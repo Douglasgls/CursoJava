@@ -1,55 +1,56 @@
 package principal;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import entidade.ContaBancaria;
+import entities.LegalPerson;
+import entities.Person;
+import entities.PhysicalPerson;
 
 public class Program {
- public static void main(String[] args) {
-	
-	Scanner sc = new Scanner(System.in);
-	System.out.print("Numero da conta: ");
-	int numeroConta = sc.nextInt();
-	System.out.println("Nome do dono da conta: ");
-	String nome = sc.next();
-	System.out.println("deseja depositar valor na sua conta: (y/n) ");
-	String letra = sc.next();
-	ContaBancaria novaConta;
-	if (letra.equals("y")) {
-		System.out.print("digite o valor a ser depositado inicialmente: ");
-		double saldo = sc.nextDouble();
-		 novaConta = new ContaBancaria(numeroConta, nome, saldo);
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Entre com a contidade pessoas: ");
+		int n = sc.nextInt();
+		
+		List<Person> listaPessoas = new ArrayList<>();
+		
+		for (int i = 0; i < n; i++) {
+			System.out.print("tax payer # "+ (i+1) + "data: ");
+			
+			System.out.print("Pessoa: juridica ou fisica  (j/f): ");
+			char choice = sc.next().charAt(0);
+			System.out.println("Name: ");
+			sc.nextLine();
+			String name = sc.nextLine();
+			System.out.print("Annual Income: ");
+			Double annIcome = sc.nextDouble();
+			
+			if (choice == 'j') {
+				System.out.print("Numero de empregados: ");
+				int numberEmplyee = sc.nextInt();
+				listaPessoas.add(new LegalPerson(name, annIcome, numberEmplyee));
+			}else {
+				System.out.println("Gastos com Saúde: ");
+				double gastoSaude = sc.nextDouble();
+				listaPessoas.add(new PhysicalPerson(name, annIcome, gastoSaude));
+			}
+		}
+		
+		
+		double taxas = 0.0;
+		for (Person person : listaPessoas) {
+			System.out.println(person.getName()+": $ " + person.taxCalculation() );
+			taxas= taxas + person.taxCalculation();
+		}
+		
+		
+		System.out.println("Soma das Taxas $ " + taxas);
+		
+		sc.close();
+
 	}
-	else {
-		 novaConta = new ContaBancaria(numeroConta, nome);
-	}
-	
-	System.out.println("account data \n"+novaConta.toString());
-	
-	System.out.print("entre com um deposito: ");
-	double deposito = sc.nextDouble();
-	novaConta.SaldoDeposito(deposito);
-	
-	System.out.println("update account data \n"+novaConta.toString());
-	
-	System.out.print("retire um saque: ");
-	double saque = sc.nextDouble();
-	novaConta.SaldoSaque(saque);
-	
-	System.out.println("update account data \n"+novaConta.toString());
-	
-	sc.close();
-	
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-}
- 
- 
+
 }
